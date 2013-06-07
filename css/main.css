@@ -1,13 +1,14 @@
-.h100 {
-    overflow: hidden;
+#svg-div, html, body {
     margin:0;
     padding:0;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    height:100% !important;
+    height:100%;
 }
 
-div.h100 {
+html {
+    overflow: hidden;
+}
+
+#svg-div {
     -webkit-overflow-scrolling: touch;
     -webkit-transform: translate3d(0,0,0);
     -moz-transform: translate3d(0,0,0);
