@@ -37,4 +37,4 @@ See the [demo](http://matthiasak.github.io/3D-svg-model-viewer).
 
 ## Screen Capture
 
-In case you can't view this demo, check out this [video](https://github.com/matthiasak/3D-svg-model-viewer/blob/master/3dBuilding.mov).
+In case you can't view this demo, check out this [video](https://github.com/matthiasak/3D-svg-model-viewer/raw/master/3dBuilding.mov).
