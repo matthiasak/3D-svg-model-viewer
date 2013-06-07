@@ -5,7 +5,7 @@ Render objects and polygons in a 3D space with SVG.
 
 ## Requirements
 
-This [demo]() uses the SVG spec 1.1, thus you will need Internet Explorer 9+ to see it.
+This [demo](http://matthiasak.github.io/3D-svg-model-viewer) uses the SVG spec 1.1, thus you will need Internet Explorer 9+ to see it.
 
 ## About the demo / technology
 
@@ -29,7 +29,7 @@ Out of interest in learning about how 3D projections work, I set out to build a 
 7. Calculate projections from each 3D point in each `<SVGPolygonElement>` onto the 2D screen.
 8. Handle dragging, scrolling, and zooming events and manipulate the rotation and zoom of the scene.
 
-See the [demo]().
+See the [demo](http://matthiasak.github.io/3D-svg-model-viewer).
 
 ## Screenshot
 
