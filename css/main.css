@@ -18,6 +18,10 @@ textarea {
     color: #222;
 }
 
+html, body, .h100 {
+    overflow: hidden;
+}
+
 body {
     font-size: 1em;
     line-height: 1.4;
