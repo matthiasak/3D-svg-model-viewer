@@ -449,7 +449,6 @@ window.addEventListener("mousemove", inputMove);
 window.addEventListener("touchmove", inputMove);
 function inputMove(e){
     e.preventDefault();
-
     if(!mousedown) return;
 
     var _dX = e.pageX - (mouseMoveX || mouseDownX);
