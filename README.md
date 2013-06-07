@@ -16,7 +16,7 @@ Out of interest in learning about how 3D projections work, I set out to build a 
 
 ---
 
-> Try it on your iPad / mobile device, too!
+> Try it on your iPad / iPhone / Android / mobile device, too!
 
 ---
 
