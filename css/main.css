@@ -25,6 +25,9 @@ html, body, .h100 {
 body {
     font-size: 1em;
     line-height: 1.4;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 /*
