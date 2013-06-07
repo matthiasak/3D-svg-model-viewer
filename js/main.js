@@ -1,6 +1,3 @@
-// http://pwnt.be/lab/3drenderer/
-// https://developer.mozilla.org/en-US/docs/SVG/Attribute/shape-rendering
-
 /**
  * RequestAnimationFrame - for animating and syncing to 60fps
  */
