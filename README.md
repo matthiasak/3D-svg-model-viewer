@@ -11,8 +11,15 @@ This [demo](http://matthiasak.github.io/3D-svg-model-viewer) uses the SVG spec 1
 
 Out of interest in learning about how 3D projections work, I set out to build a 3D scene renderer. I thought to use SVG because:
 
-1. It is a widely supported and very efficient technology
-2. 3D vector rendering seemed simpler when I wanted to allow for DOM events on 3D surfaces/objects.
+1. It is a widely supported and very portable technology
+2. 3D vector rendering seemed simpler when I wanted to allow for DOM events on 3D surfaces/objects. This lets me "paint a 3D scene" without rendering `(window.width * window.height)` pixels each frame.
+
+---
+
+> Try it on your iPad / mobile device, too!
+
+---
+
 
 ## How it works, a bird's eye view
 
