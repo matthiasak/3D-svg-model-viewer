@@ -19,6 +19,7 @@ Out of interest in learning about how 3D projections work, I set out to build a 
 1. Create standard environment events (click, drag, scroll) and some variables
 2. Initialize a "Building" as an example 3D object
 	- Read in some geometric variables, create a list of 3D polygons
+	- Generate random colors for each wall, since I don't care about color
 3. Setup the "camera" (focal point) with some variables built from the Building's 3D object
 4. Setup the `<SVGPolygonElement>`s inside the `<SVG>` element
 5. Calculate distances between each surface and the camera
@@ -29,3 +30,11 @@ Out of interest in learning about how 3D projections work, I set out to build a 
 8. Handle dragging, scrolling, and zooming events and manipulate the rotation and zoom of the scene.
 
 See the [demo]().
+
+## Screenshot
+
+![](https://github.com/matthiasak/3D-svg-model-viewer/blob/master/Screen%20Shot%202013-06-07%20at%2011.07.23.png)
+
+## Screen Capture
+
+In case you can't view this demo, check out this [video](https://github.com/matthiasak/3D-svg-model-viewer/blob/master/3dBuilding.mov).
