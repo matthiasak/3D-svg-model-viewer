@@ -449,14 +449,8 @@ window.addEventListener("mousemove", inputMove);
 window.addEventListener("touchmove", inputMove);
 function inputMove(e){
     e.preventDefault();
+
     if(!mousedown) return;
-
-    var startTopScroll = body.scrollTop;
-    if(startTopScroll <= 0)
-        body.scrollTop = 1;
-
-    if(startTopScroll + body.offsetHeight >= body.scrollHeight)
-        body.scrollTop = body.scrollHeight - body.offsetHeight - 1;
 
     var _dX = e.pageX - (mouseMoveX || mouseDownX);
     mouseMoveX = e.pageX;
