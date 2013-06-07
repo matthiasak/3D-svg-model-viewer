@@ -473,6 +473,11 @@ function inputMove(e){
     requestAnimationFrame(function(){ paint(shapes, svgShapes, camera, width, height, fov) });
 }
 
+document.addEventListener(
+  'touchmove',
+  function(e) { e.preventDefault(); },
+  false
+);
 
 var mousewheelevt=(/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
 document.addEventListener(mousewheelevt, function(e){
