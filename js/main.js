@@ -438,6 +438,13 @@ function inputStart(e){
     mousedown = 1;
     mouseDownX = e.pageX;
     mouseDownY = e.pageY;
+    elem = document.querySelector('body', e.currentTarget)[0];
+    var startTopScroll = elem.scrollTop;
+    if(startTopScroll <= 0)
+        elem.scrollTop = 1;
+
+    if(startTopScroll + elem.offsetHeight >= elem.scrollHeight)
+        elem.scrollTop = elem.scrollHeight - elem.offsetHeight - 1;
 }
 
 window.addEventListener("mouseup", inputEnd);
