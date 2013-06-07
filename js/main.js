@@ -450,7 +450,6 @@ function inputEnd(e){
 window.addEventListener("mousemove", inputMove);
 window.addEventListener("touchmove", inputMove);
 function inputMove(e){
-    e.preventDefault();
     if(!mousedown) return;
     var _dX = e.pageX - (mouseMoveX || mouseDownX);
     mouseMoveX = e.pageX;
@@ -463,7 +462,6 @@ function inputMove(e){
     rearrangePolygonsByCameraDistances(shapes, svgShapes, camera, svg);
     requestAnimationFrame(function(){ paint(shapes, svgShapes, camera, width, height, fov) });
 }
-
 
 var mousewheelevt=(/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
 document.addEventListener(mousewheelevt, function(e){
