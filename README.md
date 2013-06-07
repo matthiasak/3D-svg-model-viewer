@@ -33,7 +33,7 @@ See the [demo]().
 
 ## Screenshot
 
-![](https://github.com/matthiasak/3D-svg-model-viewer/blob/master/Screen%20Shot%202013-06-07%20at%2011.07.23.png)
+![](https://raw.github.com/matthiasak/3D-svg-model-viewer/master/Screen%20Shot%202013-06-07%20at%2011.07.23.png)
 
 ## Screen Capture
 
