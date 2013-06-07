@@ -401,6 +401,7 @@ var dY = 0;
 var maxDimension = testBuilding.width > testBuilding.length ? testBuilding.width : testBuilding.length;
 var last_camera_position = 0;
 var zoom = -1.5 * maxDimension;
+var body = document.querySelector('body');
 
 window.addEventListener("load", function() {
     setCameraPosition(0, testBuilding.swaEaveHeight * -1, zoom);
@@ -447,7 +448,16 @@ function inputEnd(e){
 window.addEventListener("mousemove", inputMove);
 window.addEventListener("touchmove", inputMove);
 function inputMove(e){
+    e.preventDefault();
     if(!mousedown) return;
+
+    var startTopScroll = body.scrollTop;
+    if(startTopScroll <= 0)
+        body.scrollTop = 1;
+
+    if(startTopScroll + body.offsetHeight >= body.scrollHeight)
+        body.scrollTop = body.scrollHeight - body.offsetHeight - 1;
+
     var _dX = e.pageX - (mouseMoveX || mouseDownX);
     mouseMoveX = e.pageX;
     if((dX > 0 && _dX < 0) || (dX < 0 && _dX > 0)){
