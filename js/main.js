@@ -435,23 +435,14 @@ function resize(e){
 window.addEventListener("mousedown", inputStart);
 window.addEventListener("touchstart", inputStart);
 function inputStart(e){
-    e.preventDefault();
     mousedown = 1;
     mouseDownX = e.pageX;
     mouseDownY = e.pageY;
-    elem = document.querySelector('body', e.currentTarget)[0];
-    var startTopScroll = elem.scrollTop;
-    if(startTopScroll <= 0)
-        elem.scrollTop = 1;
-
-    if(startTopScroll + elem.offsetHeight >= elem.scrollHeight)
-        elem.scrollTop = elem.scrollHeight - elem.offsetHeight - 1;
 }
 
 window.addEventListener("mouseup", inputEnd);
 window.addEventListener("touchend", inputEnd);
 function inputEnd(e){
-    e.preventDefault();
     mousedown = 0;
     mouseMoveX = 0;
 }
@@ -459,7 +450,6 @@ function inputEnd(e){
 window.addEventListener("mousemove", inputMove);
 window.addEventListener("touchmove", inputMove);
 function inputMove(e){
-    e.preventDefault();
     if(!mousedown) return;
     var _dX = e.pageX - (mouseMoveX || mouseDownX);
     mouseMoveX = e.pageX;
@@ -473,11 +463,6 @@ function inputMove(e){
     requestAnimationFrame(function(){ paint(shapes, svgShapes, camera, width, height, fov) });
 }
 
-document.addEventListener(
-  'touchmove',
-  function(e) { e.preventDefault(); },
-  false
-);
 
 var mousewheelevt=(/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
 document.addEventListener(mousewheelevt, function(e){
