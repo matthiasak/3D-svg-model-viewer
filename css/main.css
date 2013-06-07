@@ -9,7 +9,7 @@ html {
     overflow: hidden;
 }
 
-#svg-div {
+/*#svg-div {
     -webkit-overflow-scrolling: touch;
     -webkit-transform: translate3d(0,0,0);
     -moz-transform: translate3d(0,0,0);
@@ -17,4 +17,4 @@ html {
     -ms-transform: translate3d(0,0,0);
     transform: translate3d(0,0,0);
     cursor: pointer;
-}
+}*/
