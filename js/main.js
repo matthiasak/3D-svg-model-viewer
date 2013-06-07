@@ -435,6 +435,7 @@ function resize(e){
 window.addEventListener("mousedown", inputStart);
 window.addEventListener("touchstart", inputStart);
 function inputStart(e){
+    e.preventDefault();
     mousedown = 1;
     mouseDownX = e.pageX;
     mouseDownY = e.pageY;
@@ -450,6 +451,7 @@ function inputStart(e){
 window.addEventListener("mouseup", inputEnd);
 window.addEventListener("touchend", inputEnd);
 function inputEnd(e){
+    e.preventDefault();
     mousedown = 0;
     mouseMoveX = 0;
 }
