@@ -46,7 +46,7 @@ if (!window.getComputedStyle) {
     }
 }
 
-//addEventListener polyfill 1.0 / Eirik Backer / MIT Licence
+//addEventListener polyfill for ie7-8
 (function(win, doc){
     if(win.addEventListener)return;     //No need to polyfill
 
