@@ -1,82 +1,4 @@
-/**
- * RequestAnimationFrame - for animating and syncing to 60fps
- */
-(function() {
-    var lastTime = 0;
-    var vendors = ['webkit', 'moz'];
-    for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-        window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
-        window.cancelAnimationFrame =
-            window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
-    }
-
-    if (!window.requestAnimationFrame)
-        window.requestAnimationFrame = function(callback, element) {
-            var currTime = new Date().getTime();
-            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-            var id = window.setTimeout(function() {
-                callback(currTime + timeToCall);
-            },
-                timeToCall);
-            lastTime = currTime + timeToCall;
-            return id;
-    };
-
-    if (!window.cancelAnimationFrame)
-        window.cancelAnimationFrame = function(id) {
-            clearTimeout(id);
-    };
-}());
-
-// window.getComputedStyle() polyfill
-if (!window.getComputedStyle) {
-    window.getComputedStyle = function(el, pseudo) {
-        this.el = el;
-        this.getPropertyValue = function(prop) {
-            var re = /(\-([a-z]){1})/g;
-            if (prop == 'float') prop = 'styleFloat';
-            if (re.test(prop)) {
-                prop = prop.replace(re, function () {
-                    return arguments[2].toUpperCase();
-                });
-            }
-            return el.currentStyle[prop] ? el.currentStyle[prop] : null;
-        }
-        return this;
-    }
-}
-
-//addEventListener polyfill for ie7-8
-(function(win, doc){
-    if(win.addEventListener)return;     //No need to polyfill
-
-    function docHijack(p){var old = doc[p];doc[p] = function(v){return addListen(old(v))}}
-    function addEvent(on, fn, self){
-        return (self = this).attachEvent('on' + on, function(e){
-            var e = e || win.event;
-            e.preventDefault  = e.preventDefault  || function(){e.returnValue = false}
-            e.stopPropagation = e.stopPropagation || function(){e.cancelBubble = true}
-            fn.call(self, e);
-        });
-    }
-    function addListen(obj, i){
-        if(i = obj.length)while(i--)obj[i].addEventListener = addEvent;
-        else obj.addEventListener = addEvent;
-        return obj;
-    }
-
-    addListen([doc, win]);
-    if('Element' in win)win.Element.prototype.addEventListener = addEvent;          //IE8
-    else{       //IE < 8
-        doc.attachEvent('onreadystatechange', function(){addListen(doc.all)});      //Make sure we also init at domReady
-        docHijack('getElementsByTagName');
-        docHijack('getElementById');
-        docHijack('createElement');
-        addListen(doc.all); 
-    }
-})(window, document);
-
-function Polygon(id, coordinates, color, opacity, stroke, forceToBackground){
+function Polygon(id, coordinates, color, opacity, stroke, forceToBackground) {
     this.id = id;
     this.coordinates = coordinates;
     this.color = color;
@@ -89,6 +11,7 @@ function Polygon(id, coordinates, color, opacity, stroke, forceToBackground){
  * Generate a list of polygons - in this case from a building
  * @return {[Polygon]} Array of Polygon objects
  */
+
 function createPolygonsFromBuilding(building) {
     var swcZ = -1 * building.width;
     var ewdX = building.length;
@@ -96,10 +19,10 @@ function createPolygonsFromBuilding(building) {
     var ewbX = 0;
     var swaEaveY = building.swaEaveHeight;
     var swcEaveY = building.swcEaveHeight;
-    var ridgeHeight = building.swaEaveHeight+building.swcEaveHeight;
+    var ridgeHeight = building.swaEaveHeight + building.swcEaveHeight;
     var maxDimension = building.width > building.length ? building.width : building.width;
     var swa = [
-        [0,0,0],
+        [0, 0, 0],
         [ewdX, 0, 0],
         [ewdX, building.swaEaveHeight, 0],
         [0, building.swaEaveHeight, 0]
@@ -108,33 +31,33 @@ function createPolygonsFromBuilding(building) {
         [ewdX, 0, 0],
         [ewdX, 0, swcZ],
         [ewdX, swcEaveY, swcZ],
-        [ewdX, ridgeHeight, swcZ/2],
+        [ewdX, ridgeHeight, swcZ / 2],
         [ewdX, swaEaveY, 0]
     ];
     var ewb = [
-        [0,0,0],
-        [0,0,swcZ],
-        [0,swcEaveY, swcZ],
-        [0, ridgeHeight, swcZ/2],
-        [0,swaEaveY,0]
+        [0, 0, 0],
+        [0, 0, swcZ],
+        [0, swcEaveY, swcZ],
+        [0, ridgeHeight, swcZ / 2],
+        [0, swaEaveY, 0]
     ]
     var swc = [
         [0, 0, swcZ],
         [ewdX, 0, swcZ],
-        [ewdX, swaEaveY, swcZ], 
+        [ewdX, swaEaveY, swcZ],
         [0, swaEaveY, swcZ]
     ];
     var rpa = [
         [ewbX, swaEaveY, 0],
         [ewdX, swaEaveY, 0],
-        [ewdX, ridgeHeight, swcZ/2],
-        [ewbX, ridgeHeight, swcZ/2]
+        [ewdX, ridgeHeight, swcZ / 2],
+        [ewbX, ridgeHeight, swcZ / 2]
     ];
     var rpc = [
         [ewdX, swcEaveY, swcZ],
         [ewbX, swcEaveY, swcZ],
-        [ewbX, ridgeHeight, swcZ/2],
-        [ewdX, ridgeHeight, swcZ/2]
+        [ewbX, ridgeHeight, swcZ / 2],
+        [ewdX, ridgeHeight, swcZ / 2]
     ];
 
     var opacity = 1;
@@ -146,11 +69,11 @@ function createPolygonsFromBuilding(building) {
         new Polygon('ewd', ewd, randomColor(), opacity, 0),
         new Polygon('rpa', rpa, randomColor(), opacity, 0),
         new Polygon('rpc', rpc, randomColor(), opacity, 0),
-        createGround(-.5*building.length, 1.5*building.length, -1.5*building.width, .5*building.width)
+        createGround(-.5 * building.length, 1.5 * building.length, -1.5 * building.width, .5 * building.width)
     ]
 }
 
-function createGround(minX, maxX, minZ, maxZ){
+function createGround(minX, maxX, minZ, maxZ) {
     var ground = [
         [minX, 0, minZ],
         [maxX, 0, minZ],
@@ -164,6 +87,7 @@ function createGround(minX, maxX, minZ, maxZ){
  * Return a random RGB color
  * @return {[Number]} an RGB array e.g. [200, 30, 47] => [R, G, B]
  */
+
 function randomColor() {
     var color = [];
     for (var j = 0; j < 3; j++) {
@@ -175,9 +99,10 @@ function randomColor() {
 /**
  * Modifies an RGB array to be a randome grayscale color, of the same luminosity as one of the RGB values.
  */
-function randomGrayScale(rgb_array){
-    var index = (Math.random()*3).toFixed(0);
-    for(var i = 0; i < 3; i++){
+
+function randomGrayScale(rgb_array) {
+    var index = (Math.random() * 3).toFixed(0);
+    for (var i = 0; i < 3; i++) {
         i !== index && (rgb_array[i] = rgb_array[index]);
     }
     return rgb_array;
@@ -187,6 +112,7 @@ function randomGrayScale(rgb_array){
  * Calculates the central 3D point of this polygon
  * @return {Point3D} the central point of the polygon
  */
+
 function getCenterOfPointArray(array_of_points) {
     var len = array_of_points.length;
     var x = 0;
@@ -208,6 +134,7 @@ function getCenterOfPointArray(array_of_points) {
 /**
  * Updates the camera's location
  */
+
 function setCameraPosition(x, y, z) {
     camera = [x, y, z];
 }
@@ -216,15 +143,16 @@ function setCameraPosition(x, y, z) {
  * Gets the central point of a 3D object and centers it over the X and Y axes.
  * @param  {Polygon} shapes [description]
  */
-function center3DObjectOnAxes(shapes){
+
+function center3DObjectOnAxes(shapes) {
     var centers = [];
     var len = shapes.length || 0;
-    for(var i = 0; i<len; i++){
+    for (var i = 0; i < len; i++) {
         centers[i] = getCenterOfPointArray(shapes[i].coordinates);
     }
     var center = getCenterOfPointArray(centers);
     center[1] = 0;
-    for(i = 0; i < len; i++){
+    for (i = 0; i < len; i++) {
         moveArrayOfPoints(shapes[i].coordinates, center)
     }
 }
@@ -234,9 +162,10 @@ function center3DObjectOnAxes(shapes){
  * @param  {[Point3D]} points List of 3D Points
  * @param  {Point3D} center A central 3D Point
  */
-function moveArrayOfPoints(points, center){
+
+function moveArrayOfPoints(points, center) {
     var len = points.length;
-    for(var i = 0; i < len; i++){
+    for (var i = 0; i < len; i++) {
         points[i][0] -= center[0];
         points[i][2] -= center[2];
     }
@@ -245,16 +174,18 @@ function moveArrayOfPoints(points, center){
 /**
  * Rotates a list of Polygon objects by a specified degree on a specified dimension
  */
-function rotateAllSurfaces(dimension, degree, shapes, camera){
+
+function rotateAllSurfaces(dimension, degree, shapes, camera) {
     for (var i = 0; i < shapes.length; i++) {
-        rotate(degree, dimension, shapes[i].coordinates, camera[2]);
+        rotate(degree, dimension, shapes[i].coordinates);
     }
 }
 
 /**
  * Rearranges the Polygons on the pages
  */
-function rearrangePolygonsByCameraDistances(shapes, svgShapes, camera, svg){
+
+function rearrangePolygonsByCameraDistances(shapes, svgShapes, camera, svg) {
     var cameraDistances = {};
     for (var i = 0; i < shapes.length; i++) {
         cameraDistances[shapes[i].id] = distance(average(shapes[i].coordinates), camera);
@@ -265,9 +196,9 @@ function rearrangePolygonsByCameraDistances(shapes, svgShapes, camera, svg){
     }
 
     var byForcedToBackground = function(a, b) {
-        if(a.forceToBackground&&!b.forceToBackground){
+        if (a.forceToBackground && !b.forceToBackground) {
             return -1;
-        } else if(!a.forceToBackground&&b.forceToBackground){
+        } else if (!a.forceToBackground && b.forceToBackground) {
             return 1;
         }
         return 0;
@@ -277,7 +208,7 @@ function rearrangePolygonsByCameraDistances(shapes, svgShapes, camera, svg){
     shapes.sort(byForcedToBackground);
 
     var length = shapes.length;
-    for(var i = 0; i < length; i++){
+    for (var i = 0; i < length; i++) {
         svg.appendChild(svgShapes[shapes[i].id]);
     }
 }
@@ -287,6 +218,7 @@ function rearrangePolygonsByCameraDistances(shapes, svgShapes, camera, svg){
  * @param {[Polygon]} shapes The list of Polygon Objects which need recalculated projections.
  * @param {[SVGPolygonElement]} svgShapes The list of SVGPolygonElements that exist in the SVG already
  */
+
 function paint(shapes, svgShapes, camera, width, height, fov) {
     var len = shapes.length;
 
@@ -294,54 +226,77 @@ function paint(shapes, svgShapes, camera, width, height, fov) {
         var shape = shapes[i];
         var coords = shape.coordinates;
         var num_coords = coords.length;
-        var containsReverseProjection = false;
-        for (var j = 0; j < num_coords; j++) {
-            if(coords[j][2] < camera[2]){
-                containsReverseProjection = true;
-                break;
-            }
-        }
-
-        var point3d = coords[coords.length - 1];
-        var point = project(point3d, camera, width, height, fov); // close the polygon
-        var svgPoints = point ? point[0] + "," + point[1] : "";
+        var point;
+        var svgPoints = "";
 
         for (var j = 0; j < num_coords; j++) {
-            point = project(coords[j], camera, width, height, fov, containsReverseProjection);
-            point && (svgPoints += " " + point[0] + "," + point[1]);
+            point = project(coords[j], camera, width, height, fov);
+            var s = svgShapes[shape.id].points.getItem(j);
+            point && (s.x = point[0]) && (s.y = point[1]);
         }
-
-        svgShapes[shape.id].setAttribute("points", svgPoints);
-        // var rgba = "rgba(" + shape.color[0] + "," + shape.color[1] + "," + shape.color[2] + "," + shape.opacity + ")";
-        // svgShapes[shape.id].setAttribute("color", rgba);
     }
 }
 
 /**
  * Returns a Point2D object representing a projection from the 3D spaces onto the 2D screen
  */
-function project(point, camera, width, height, fov, containsReverseProjection) {
-    var minDimension = width - height < 0 ? width : height;
-    var scale = minDimension / fov;
-    var z_weighting = point[2] + camera[2];
-    var x = (width/2 + scale * (point[0] + camera[0]) / z_weighting);
-    var y = (height/2 + scale * (point[1] + camera[1]) / z_weighting);
-    return [x,y];
+
+function project(point, camera, width, height, fov) {
+    var minDimension = Math.min(width, height),
+        scale = minDimension / fov,
+        z_weighting = point[2] + camera[2],
+        x = width / 2 + scale * (point[0] + camera[0]) / z_weighting,
+        y = height / 2 + scale * (point[1] + camera[1]) / z_weighting;
+
+    // TODO: MAK
+    // point[3] = 0;
+    // console.log(point);
+    var mPoint = new Matrix(point);
+    var new_projection = projectionMatrix.multiply(mPoint.transpose(mPoint));
+    // console.log(new_projection.col(0));
+
+    return [x, y];
+
+    /**
+     * this.camera = {
+            fov: 45,
+            eye: [0,50,100],
+            center:[0,0,0],
+            up: [0,1,0],
+        };
+     */
+
+
+    //from local to normalized screen coordinates
+    // var tmp = [0,0,0];
+    // mat4.multiplyVec3(transform, v, tmp);
+    // projectionMatrix.multiply(point);
+    // tmp[0] /= tmp[2];
+    // tmp[1] = (1.0 - tmp[1]) / tmp[2];
+
+    //from normalized to screen coordinates
+    // tmp[0] = (tmp[0] + 1) * ( this.viewport[2] * 0.5 ) + this.viewport[0];
+    // tmp[1] = (tmp[1] + 1) * ( this.viewport[3] * 0.5 ) + this.viewport[1];
+
+    //tmp[0] = Math.round(tmp[0]+0.5); tmp[1] = Math.round(tmp[1]+0.5);
+    // return tmp;
 }
 
 /**
- * Creates an SVG object, appends it to the HTML container provided, and returns a reference
+ * Creates an SVG object, appends it to the HTML element provided (or the document body), and returns a reference
  */
-function initSvg(container) {
+
+function initSvg(el) {
     var svg = document.createElementNS(SVG_NS, "svg");
     svg.setAttribute("version", "1.1");
-    container.appendChild(svg);
+    (el || document.body).appendChild(svg);
     return svg;
 }
 
 /**
  * Creates SVGPolygonElements and adds them to the svgShapes {} and the svg SVGElement
  */
+
 function addSVGsFromShapes(shapes, svgShapes, svg) {
     for (var i = 0; i < shapes.length; i++) {
         var shape = shapes[i];
@@ -353,6 +308,9 @@ function addSVGsFromShapes(shapes, svgShapes, svg) {
             poly.setAttribute("style", "fill:" + rgb + ";fill-opacity:" + shape.opacity);
         }
         svgShapes[shape.id] = poly;
+        for (var j = 0, len = shape.coordinates.length; j < len; j++) {
+            poly.points.appendItem(svg.createSVGPoint());
+        }
         svg.appendChild(poly);
     }
 }
@@ -405,6 +363,10 @@ function rotate(angle, axis, points) {
     }
 }
 
+/**
+ * -----------------
+ */
+
 var testBuilding = {
     width: 800,
     length: 800,
@@ -414,34 +376,35 @@ var testBuilding = {
     swcEaveHeight: 240
 };
 
-var svg;
-var svg_style;
-var width;
-var height;
-var camera;
-var shapes = createPolygonsFromBuilding(testBuilding);
-var svgShapes = {};
-var SVG_NS = "http://www.w3.org/2000/svg";
-var window_width = parseInt(window.getComputedStyle(document.querySelector('html')).width, 10);
-var window_height = parseInt(window.getComputedStyle(document.querySelector('html')).height, 10);
-var mouseDownX;
-var mouseDownY;
-var mousedown;
-var mouseMoveX;
-var mouseMoveY;
-var xfov = 70;
-var fov = xfov*0.0174532925; // 1 degree = 0.0174532925 radians;
-var dX = 0;
-var dY = 0;
-var maxDimension = testBuilding.width > testBuilding.length ? testBuilding.width : testBuilding.length;
-var last_camera_position = 0;
-var zoom = -1.5 * maxDimension;
-var body = document.querySelector('body');
+var svg,
+    svg_style,
+    width,
+    height,
+    camera,
+    shapes = createPolygonsFromBuilding(testBuilding),
+    svgShapes = {},
+    SVG_NS = "http://www.w3.org/2000/svg",
+    window_width = parseInt(window.getComputedStyle(document.querySelector('html')).width, 10),
+    window_height = parseInt(window.getComputedStyle(document.querySelector('html')).height, 10),
+    mouseDownX,
+    mouseDownY,
+    mousedown,
+    mouseMoveX,
+    mouseMoveY,
+    xfov = 50,
+    fov = xfov * 0.0174532925; // 1 degree = 0.0174532925 radians,
+dX = 0,
+dY = 0,
+maxDimension = testBuilding.width > testBuilding.length ? testBuilding.width : testBuilding.length,
+last_camera_position = 0,
+zoom = -1.5 * maxDimension,
+body = document.querySelector('body'),
+projectionMatrix = null;
 
 window.addEventListener("load", function() {
     setCameraPosition(0, testBuilding.swaEaveHeight * -1, zoom);
 
-    svg = initSvg(document.querySelector("#svg-div"));
+    svg = initSvg();
 
     addSVGsFromShapes(shapes, svgShapes, svg);
 
@@ -453,21 +416,36 @@ window.addEventListener("load", function() {
 
     rotateAllSurfaces("y", .65, shapes, camera);
     rearrangePolygonsByCameraDistances(shapes, svgShapes, camera, svg);
-    requestAnimationFrame(function(){ paint(shapes, svgShapes, camera, width, height, fov); });
+    requestAnimationFrame(function() {
+        paint(shapes, svgShapes, camera, width, height, fov);
+    });
+
+    // TODO: MAK
+    projectionMatrix = new Matrix();
+    projectionMatrix = projectionMatrix.perspective(fov, width / height, 10, 5000);
+
 }, false);
 
 window.addEventListener("resize", resize);
 window.addEventListener("orientationchange", resize);
-function resize(e){
+
+function resize(e) {
     svg_style = window.getComputedStyle(svg);
     width = parseInt(svg_style.width, 10);
     height = parseInt(svg_style.height, 10);
-    requestAnimationFrame(function(){ paint(shapes, svgShapes, camera, width, height, fov) });
+
+    // TODO: MAK
+    projectionMatrix = projectionMatrix.perspective(fov, width / height, 10, 5000);
+
+    requestAnimationFrame(function() {
+        paint(shapes, svgShapes, camera, width, height, fov)
+    });
 }
 
 window.addEventListener("mousedown", inputStart);
 window.addEventListener("touchstart", inputStart);
-function inputStart(e){
+
+function inputStart(e) {
     mousedown = 1;
     mouseDownX = e.pageX;
     mouseDownY = e.pageY;
@@ -475,35 +453,41 @@ function inputStart(e){
 
 window.addEventListener("mouseup", inputEnd);
 window.addEventListener("touchend", inputEnd);
-function inputEnd(e){
+
+function inputEnd(e) {
     mousedown = 0;
     mouseMoveX = 0;
 }
 
 window.addEventListener("mousemove", inputMove);
 window.addEventListener("touchmove", inputMove);
-function inputMove(e){
+
+function inputMove(e) {
     e.preventDefault();
-    if(!mousedown) return;
+    if (!mousedown) return;
 
     var _dX = e.pageX - (mouseMoveX || mouseDownX);
     mouseMoveX = e.pageX;
-    if((dX > 0 && _dX < 0) || (dX < 0 && _dX > 0)){
+    if ((dX > 0 && _dX < 0) || (dX < 0 && _dX > 0)) {
         mouseDownX = mouseMoveX;
     }
     dX = _dX;
 
     rotateAllSurfaces("y", (Math.PI * dX * 2 / window_width), shapes, camera);
     rearrangePolygonsByCameraDistances(shapes, svgShapes, camera, svg);
-    requestAnimationFrame(function(){ paint(shapes, svgShapes, camera, width, height, fov) });
+    requestAnimationFrame(function() {
+        paint(shapes, svgShapes, camera, width, height, fov)
+    });
 }
 
-var mousewheelevt=(/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
-document.addEventListener(mousewheelevt, function(e){
+var mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
+document.addEventListener(mousewheelevt, function(e) {
     var _zoom = zoom + e.wheelDeltaY;
-    if(_zoom < -1.5 * maxDimension && _zoom > -5 * maxDimension){
+    if (_zoom < -1.5 * maxDimension && _zoom > -5 * maxDimension) {
         zoom = _zoom;
         setCameraPosition(0, testBuilding.swaEaveHeight * -1, zoom);
-        requestAnimationFrame(function(){ paint(shapes, svgShapes, camera, width, height, fov) });
+        requestAnimationFrame(function() {
+            paint(shapes, svgShapes, camera, width, height, fov)
+        });
     }
 }, false);

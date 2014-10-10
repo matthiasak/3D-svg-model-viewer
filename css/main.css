@@ -1,4 +1,4 @@
-#svg-div, html, body {
+svg, html, body {
     margin:0;
     padding:0;
     height:100%;
@@ -9,7 +9,7 @@ html {
     overflow: hidden;
 }
 
-#svg-div {
+svg {
     position: absolute;
     top:0;
     left:0;
